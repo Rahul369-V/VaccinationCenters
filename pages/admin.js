@@ -4,11 +4,12 @@ import Header from '../components/Header'
 import { database } from '../firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
+import { useAuth } from '../context'
 
 export default function Admin(props) {
     const [vaccinationCenters,setVaccinationCenters] = useState([])
     const vaccinationCenterRef = collection(database,"vaccination_centers")
-
+    const {currentUserRole} = useAuth();
     useEffect(()=> {
         //make asyn function
         const getCenters = async() => {
@@ -24,9 +25,11 @@ export default function Admin(props) {
         
         },[])
   return (
-    <div>
+
+        <div>
         <Header page={"admin"}/>
-        <h3 className='text-lg italic leading-tight tracking-tight shadow-sm md:text-2xl dark:text-black'>Admin Panel✅</h3>
+        {currentUserRole == "admin"?(<h3 className='text-lg italic leading-tight tracking-tight shadow-sm md:text-2xl dark:text-black'>Admin Panel✅</h3>):(<h3 className='text-lg italic leading-tight tracking-tight shadow-sm md:text-2xl dark:text-black'>User Panel 👤</h3>)}
+        
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -50,8 +53,7 @@ export default function Admin(props) {
             </tr>
         </thead>
         <tbody>
-       
-        {vaccinationCenters.map((cent)=>{
+        {currentUserRole == "admin" ?(vaccinationCenters.map((cent)=>{
             
          
             return(
@@ -76,7 +78,34 @@ export default function Admin(props) {
                 </td>
             </tr>
             )
-        })}
+        })):( vaccinationCenters.map((cent)=>{
+            
+         
+            return(
+                <tr key={cent.centerName} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {cent.centerName}
+                   
+                </th>
+                
+                <td className="px-6 py-4">
+        
+                {new Date((new Date(1970,0,1).setSeconds(cent.date['seconds']))).toDateString()}
+                </td>
+                <td className="px-6 py-4">
+                {cent.location}
+                </td>
+                <td className="px-6 py-4">
+                {cent.slots}
+                </td>
+                <td className="px-6 py-4 text-right">
+                    <a  className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Book the Slot</a>
+                </td>
+            </tr>
+            )
+        }))}
+       
+       
             
         </tbody>
         </table>
@@ -85,6 +114,8 @@ export default function Admin(props) {
        
 
     </div>
+    
+
   
   )
 }

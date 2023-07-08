@@ -34,12 +34,10 @@ export default function LoginPage() {
                 .then((res)=>{
                     console.log(res)
                     
-                    // liveChange();
-                    if(currentUserRole == "user"){
-                        router.push(`/users`)
-                    }else{
+                   
+                    
                         router.push(`/admin`)
-                    }
+                    
                     
                 
                 
