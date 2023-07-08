@@ -5,7 +5,7 @@ import { database } from '../firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 
-function admin(props) {
+export default function Admin(props) {
     const [vaccinationCenters,setVaccinationCenters] = useState([])
     const vaccinationCenterRef = collection(database,"vaccination_centers")
 
@@ -89,4 +89,4 @@ function admin(props) {
   )
 }
 
-export default admin
+// export default admin
