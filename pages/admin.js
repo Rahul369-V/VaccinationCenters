@@ -2,15 +2,19 @@ import React from 'react'
 import Header from '../components/Header'
 import { Router,useRouter } from 'next/router'
 import { database } from '../firebase'
-import { collection, getDocs,doc,deleteDoc,updateDoc } from 'firebase/firestore'
+import { collection, getDocs,doc,deleteDoc,updateDoc, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context'
+import AdminViewDetials from './AdminViewDetials'
+import Link from 'next/link'
 
 export default function Admin(props) {
     const router = useRouter()
     const [vaccinationCenters,setVaccinationCenters] = useState([])
     const vaccinationCenterRef = collection(database,"vaccination_centers")
     const {currentUserRole} = useAuth();
+    const {currentUser} = useAuth();
+    // console.log(currentUser.email)
     useEffect(()=> {
         //make asyn function
         const getCenters = async() => {
@@ -22,7 +26,7 @@ export default function Admin(props) {
             data.forEach((doc) =>{
                 
                 if(doc.id != "MOCAvGpPGvsEYxX4Jlm7"){
-                    d.push({id:doc.id,centerName:doc.data().centerName,location:doc.data().location,slots:doc.data().slots,date:doc.data().date});
+                    d.push({id:doc.id,bookedDetails:doc.data().bookedDetails,centerName:doc.data().centerName,location:doc.data().location,slots:doc.data().slots,date:doc.data().date});
                     
                 }
                 
@@ -37,20 +41,44 @@ export default function Admin(props) {
         },[])
 
     const updateUser = async(id,slot) => {
-       
-        const newSlot = {slots:slot-1}
-        const currentDoc = doc(database,"vaccination_centers",id)
-        await updateDoc(currentDoc,newSlot)
+        // if(currentUser.email)
+        vaccinationCenters.forEach(async(data)=>{
+            if(data.id === id && !( data.bookedDetails.includes(currentUser.email))){
+                var arr =[currentUser.email]
+                arr.push()
+                const newSlot = {slots:slot-1,bookedDetails:arr}
+                const currentDoc = doc(database,"vaccination_centers",id)
+                await updateDoc(currentDoc,newSlot)
+            }else{
+                alert("Sorry🥺 ,You already booked a slot")
+            }
+        })
+        
     }
 
     const closeCenter = async(id) =>{
         if(id !="MOCAvGpPGvsEYxX4Jlm7"){
             const q = doc(database,"vaccination_centers",id)
             await deleteDoc(q).then(()=>router.push('/admin'))
-        }
-        
-       
+        } 
 
+    }
+    const viewDetails = async(id) => {
+        vaccinationCenters.forEach(async(data)=>{
+            if(data.id == id){
+                return data.bookedDetails
+                // <AdminViewDetials P ={data.bookedDetails}/>
+                // Router.push({
+                //     pathname:'/AdminViewDetials',
+                //     query:{
+                //         result:JSON.stringify( data.bookedDetails)
+                //     }
+                // })
+            }else{
+                return("none")
+                alert("Sorry🥺 ,Sorry no such centers available")
+            }
+        })
     }
   return (
 
@@ -75,9 +103,15 @@ export default function Admin(props) {
                 <th scope="col" className="px-6 py-3">
                     Slots💉
                 </th>
+             
                 <th scope="col" className="px-6 py-3">
-                    <span className="sr-only">Edit</span>
+                    Edit
                 </th>
+                {currentUserRole == "admin"?(<th  scope="col" className="px-6 py-3">
+                   View Details📝
+                    
+                </th>):(null)}
+                
             </tr>
         </thead>
         <tbody>
@@ -103,6 +137,13 @@ export default function Admin(props) {
                 </td>
                 <td className="px-6 py-4 text-right">
                     <p onClick={()=>closeCenter(cent.id)} className=" font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline">Close</p>
+                </td>
+                <td className="px-6 py-4 text-right">
+                    {/* <p onClick={()=>viewDetails(cent.id)} className=" font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline">View Details</p> */}
+                    <Link className='font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline' href={{
+                        pathname:'/AdminViewDetials',
+                        query:JSON.stringify(cent.bookedDetails)
+                    }}>View Details📝</Link>
                 </td>
             </tr>
             )

@@ -22,7 +22,7 @@ export default function AuthContextProvider( {children}){
     const value = () => {
         currentUser
     }
-
+    
     useEffect(()=>{//whenever component mounts and unmounts
         const unsubscribe = onAuthStateChanged(auth,user =>{
             setCurrentUser(user)

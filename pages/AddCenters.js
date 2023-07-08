@@ -20,7 +20,8 @@ function AddCenters() {
             centerName:centerName,
             slots:10,
             location:location,
-            date:serverTimestamp()
+            date:serverTimestamp(),
+            bookedDetails:[]
 
         
         
