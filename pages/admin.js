@@ -44,8 +44,8 @@ export default function Admin(props) {
         // if(currentUser.email)
         vaccinationCenters.forEach(async(data)=>{
             if(data.id === id && !( data.bookedDetails.includes(currentUser.email))){
-                var arr =[currentUser.email]
-                arr.push()
+                var arr =[]
+                arr.push(currentUser.email)
                 const newSlot = {slots:slot-1,bookedDetails:arr}
                 const currentDoc = doc(database,"vaccination_centers",id)
                 await updateDoc(currentDoc,newSlot)
