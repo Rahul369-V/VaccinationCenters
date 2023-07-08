@@ -1,3 +1,11 @@
+## Covid Vaccination centers 
+COVID vaccination centers full stack project involves different types of users, including regular users and administrators. I have also implemented protected routes for both user types, authentication functionality, and CRUD operations using Firebase Firestore.
+
+# Implemented Functionalities
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
