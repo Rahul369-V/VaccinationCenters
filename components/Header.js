@@ -12,7 +12,7 @@ const styleTag  = {
 }
 function Header(props) {
     const router = useRouter();
-    
+    const {currentUserRole} = useAuth();
 
     
   return (
@@ -39,13 +39,27 @@ function Header(props) {
                 } else if (props.page == "admin") {
                 return (
                     <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'>
-              
-        
-                        <div className={styleTag.button}>
-                            <p  onClick={()=>router.push(`/signup`)} >Logout</p>
-                        </div>
+                        {(currentUserRole == "admin")?
 
+                        (  <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'>
+                             <div className={styleTag.button}>
+                                <p  onClick={()=>router.push(`/AddCenters`)} >Add Centers➕</p>
+                            </div>
+                            <div className={styleTag.button}>
+                                <p  onClick={()=>router.push(`/signup`)} >Logout</p>
+                            </div>
+                            </div>
+                        )
+                        :(  <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'> 
+                               
+                                <div className={styleTag.button}>
+                                    <p  onClick={()=>router.push(`/signup`)} >Logout</p>
+                                </div>
+                            </div>
+                        )}
+                     
                     </div>
+                    
                 )
                 } else {
                 return (

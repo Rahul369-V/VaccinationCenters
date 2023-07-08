@@ -1,12 +1,13 @@
 import React from 'react'
 import Header from '../components/Header'
-
+import { Router,useRouter } from 'next/router'
 import { database } from '../firebase'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs,doc,deleteDoc,updateDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context'
 
 export default function Admin(props) {
+    const router = useRouter()
     const [vaccinationCenters,setVaccinationCenters] = useState([])
     const vaccinationCenterRef = collection(database,"vaccination_centers")
     const {currentUserRole} = useAuth();
@@ -15,15 +16,42 @@ export default function Admin(props) {
         const getCenters = async() => {
  
             const data = await getDocs(vaccinationCenterRef)
-            console.log(data.docs[0].data())
-            setVaccinationCenters(data.docs.map((doc)=>({...doc.data(),id:doc.id})))
-
+            
+            // setVaccinationCenters(data.docs.map((doc)=>({...doc.data(),id:doc.id})))
+            var d = []
+            data.forEach((doc) =>{
+                
+                if(doc.id != "MOCAvGpPGvsEYxX4Jlm7"){
+                    d.push({id:doc.id,centerName:doc.data().centerName,location:doc.data().location,slots:doc.data().slots,date:doc.data().date});
+                    
+                }
+                
+                // setVaccinationCenters({id:doc.id,centername:doc.data().centerName})
+            })
+            setVaccinationCenters(d)
 
         
     }
     getCenters()
         
         },[])
+
+    const updateUser = async(id,slot) => {
+       
+        const newSlot = {slots:slot-1}
+        const currentDoc = doc(database,"vaccination_centers",id)
+        await updateDoc(currentDoc,newSlot)
+    }
+
+    const closeCenter = async(id) =>{
+        if(id !="MOCAvGpPGvsEYxX4Jlm7"){
+            const q = doc(database,"vaccination_centers",id)
+            await deleteDoc(q).then(()=>router.push('/admin'))
+        }
+        
+       
+
+    }
   return (
 
         <div>
@@ -53,7 +81,7 @@ export default function Admin(props) {
             </tr>
         </thead>
         <tbody>
-        {currentUserRole == "admin" ?(vaccinationCenters.map((cent)=>{
+        {(currentUserRole == "admin") ?(vaccinationCenters.map((cent)=>{
             
          
             return(
@@ -74,7 +102,7 @@ export default function Admin(props) {
                 {cent.slots}
                 </td>
                 <td className="px-6 py-4 text-right">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Close</a>
+                    <p onClick={()=>closeCenter(cent.id)} className=" font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline">Close</p>
                 </td>
             </tr>
             )
@@ -99,7 +127,11 @@ export default function Admin(props) {
                 {cent.slots}
                 </td>
                 <td className="px-6 py-4 text-right">
-                    <a  className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Book the Slot</a>
+                    {(cent.slots >0)?(
+                        <p onClick={()=>updateUser(cent.id,cent.slots)} className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline">Book a Slot✅</p>
+                    ):(
+                        <p onClick={()=>updateUser(cent.id,cent.slots)} className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline">No Slots Available</p>
+                    )}
                 </td>
             </tr>
             )
