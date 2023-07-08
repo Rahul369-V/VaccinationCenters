@@ -42,17 +42,28 @@ export default function Admin(props) {
 
     const updateUser = async(id,slot) => {
         // if(currentUser.email)
+        var arr =[]
+        
         vaccinationCenters.forEach(async(data)=>{
-            if(data.id === id && !( data.bookedDetails.includes(currentUser.email))){
-                var arr =[]
-                arr.push(currentUser.email)
-                const newSlot = {slots:slot-1,bookedDetails:arr}
-                const currentDoc = doc(database,"vaccination_centers",id)
-                await updateDoc(currentDoc,newSlot)
-            }else{
-                alert("Sorry🥺 ,You already booked a slot")
+            
+            var arr = data.bookedDetails
+            var status = ""
+            // console.log(data.bookedDetails.includes(currentUser.email))
+            if(data.id === id ){
+                if(!( data.bookedDetails.includes(currentUser.email))){
+                    arr.push(currentUser.email)
+                    const newSlot = {slots:slot-1,bookedDetails:arr}
+                    const currentDoc = doc(database,"vaccination_centers",id)
+                    await updateDoc(currentDoc,newSlot)
+                    
+                }else{
+                    alert("Sorry🥺 ,You already booked a slot")
+                }
+                
+                
             }
         })
+        
         
     }
 

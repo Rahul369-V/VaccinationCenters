@@ -6,19 +6,20 @@ import Header from '../components/Header';
 
 function AdminViewDetials(props) {
     const {currentUserRole} = useAuth();
+    
     const router = useRouter()
    // console.log(router.query)
     const urlParam = new URLSearchParams(router.query);
     // console.log(urlParam);
     const keys = urlParam.keys()
-    const users = []
+    var users=""
     for (var key of keys){
-        
-       console.log(typeof(key))
-     
-        users.push(key)
+        key = key.replace('[','')
+        key = key.replace(']','')
+        users  = key.split(",")
     }
-    console.log(users)
+    // console.log("ddddd",a);
+    // console.log(users)
     // a.forEach(element => {console.log(element)
         
     // });
@@ -61,11 +62,7 @@ function AdminViewDetials(props) {
               
             </tr>
             )
-        })):( <div>
-
-            <h3>Only Admin can ascess❗❗</h3>
-
-        </div>)}
+        })):( <h2 className='text-lg text-black'>Only Admin can access the details❗❗❗</h2>)}
        
        
             
