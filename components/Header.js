@@ -12,9 +12,10 @@ const styleTag  = {
 }
 function Header(props) {
     const router = useRouter();
+    const {currentUser} = useAuth();
     const {currentUserRole} = useAuth();
-
-    
+    const {logout} = useAuth();
+   
   return (
     
     <div className={styleTag.headerWrapper}>
@@ -42,19 +43,25 @@ function Header(props) {
                         {(currentUserRole == "admin")?
 
                         (  <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'>
-                             <div className={styleTag.button}>
-                                <p  onClick={()=>router.push(`/AddCenters`)} >Add Centers➕</p>
-                            </div>
-                            <div className={styleTag.button}>
-                                <p  onClick={()=>router.push(`/signup`)} >Logout</p>
-                            </div>
+                            {currentUser &&<div className={styleTag.button}>
+                                 <p  onClick={()=>router.push(`/AddCenters`)} >Add Centers➕</p>
+                            </div>}
+                            {currentUser && <div className={styleTag.button}>
+                            <p  onClick={async (e)=>{
+                                        e.preventDefault()
+                                        logout()
+                                        }} >Logout</p>
+                            </div>}
                             </div>
                         )
                         :(  <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'> 
                                
-                                <div className={styleTag.button}>
-                                    <p  onClick={()=>router.push(`/signup`)} >Logout</p>
-                                </div>
+                        {currentUser && <div className={styleTag.button}>
+                            <p  onClick={async (e)=>{
+                                        e.preventDefault()
+                                        logout()
+                                        }} >Logout</p>
+                            </div>}
                             </div>
                         )}
                      
@@ -66,7 +73,10 @@ function Header(props) {
                     <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'>
               
                         <div className={styleTag.button}>
-                            <p onClick={()=>router.push(`/login`)}>Logout    </p>
+                        <p  onClick={async (e)=>{
+                                        e.preventDefault()
+                                        logout()
+                                        }} >Logout</p>
                         </div>
             
 
