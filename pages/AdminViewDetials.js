@@ -10,21 +10,23 @@ function AdminViewDetials(props) {
     const router = useRouter()
    // console.log(router.query)
     const urlParam = new URLSearchParams(router.query);
-    // console.log(urlParam);
-    const keys = urlParam.keys()
+    // console.log(urlParam.keys());
+    const urlkeys = urlParam.keys()
+   
     var users=""
-    for (var key of keys){
-        key = key.replace('[','')
-        key = key.replace(']','')
-        users  = key.split(",")
-    }
-    // console.log("ddddd",a);
-    // console.log(users)
-    // a.forEach(element => {console.log(element)
-        
-    // });
-    // console.log(router.query)
-    ///console.log(JSON.parse(JSON.stringify(router.query)))
+    
+    for (var key of urlkeys){
+            
+            key = key.replace('[','')
+            key = key.replace(']','')
+            if((key.length)>0){
+                users  = key.split(",")
+            }else{
+                users = []
+            }
+            
+        }
+    
   return (
     <div>
         <Header page={"admin"}/>
@@ -45,7 +47,7 @@ function AdminViewDetials(props) {
             </tr>
         </thead>
         <tbody>
-        {(currentUserRole == "admin") ?(users.map((cent,id)=>{
+        {(currentUserRole == "admin" && users.length>0) ?(users.map((cent,id)=>{
             
          
             return(
@@ -62,7 +64,9 @@ function AdminViewDetials(props) {
               
             </tr>
             )
-        })):( <h2 className='text-lg text-black'>Only Admin can access the details❗❗❗</h2>)}
+        })):( (currentUserRole == "admin")?(<h2 className='text-lg text-black'>👤No one is registered for the Vaccination slot</h2>):(<h2 className='text-lg text-black'>Only Admin can access the details❗❗❗</h2>)
+            
+            )}
        
        
             

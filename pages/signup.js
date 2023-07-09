@@ -11,12 +11,11 @@ export default function Signup() {
   // const [loginPass,setLoginPass] = useState() ;
   const [isSubmitted,setIsSubmitted] = useState(false) ;
   const [role,setRole] = useState("User");
-  
-  const register = async () => {
-        
-  }
 
+//defined in context folder
 const {registerUser} = useAuth();
+
+
   return (
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       {/* <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -32,7 +31,9 @@ const {registerUser} = useAuth();
                 e.preventDefault();
                 setIsSubmitted(true)
                 registerUser(registerEmail,registerPassword,role)
-                .then((res)=>console.log(res))
+                .then((res)=>{
+                  // console.log(res)
+                  router.push('/admin')})
                 .catch((err)=>alert(err.message)).finally(()=>setIsSubmitted(false))
                 // console.log(registerEmail,registerPassword,role)
               }}>

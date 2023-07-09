@@ -43,7 +43,7 @@ export default function Admin(props) {
     const updateUser = async(id,slot) => {
         // if(currentUser.email)
         var arr =[]
-        
+
         vaccinationCenters.forEach(async(data)=>{
             
             var arr = data.bookedDetails
@@ -54,7 +54,7 @@ export default function Admin(props) {
                     arr.push(currentUser.email)
                     const newSlot = {slots:slot-1,bookedDetails:arr}
                     const currentDoc = doc(database,"vaccination_centers",id)
-                    await updateDoc(currentDoc,newSlot)
+                    await updateDoc(currentDoc,newSlot).then(()=>{alert("Booking Confirmed✅")})
                     
                 }else{
                     alert("Sorry🥺 ,You already booked a slot")

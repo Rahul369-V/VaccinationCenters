@@ -55,7 +55,7 @@ export default function AuthContextProvider( {children}){
         return createUserWithEmailAndPassword(auth,email,password,role)
         .then(async ()=>{
             //create the user data in firestore
-            await addDoc(userCollectionRef,{email:email,role:role})
+            (await addDoc(userCollectionRef,{email:email,role:role}))
         })
     }
 
