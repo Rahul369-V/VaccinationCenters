@@ -20,11 +20,69 @@ a {
 }
 
 .mainBlock {
-  position: relative;
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    /* text-align: center; */
+    height: 100vh;
+    background-image:linear-gradient(rgba(4,9,30,0.7),rgba(4, 9, 30, 0.7)), url("https://img.freepik.com/free-vector/flat-hand-drawn-coronavirus-vaccine-background_23-2148843297.jpg?w=2000");
+    background-size: cover;
+  
+  /* position: relative;
 	min-height: 100vh;
 	width: 100%;
 	background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4, 9, 30, 0.7)),url(https://sochedem.cl/wp-content/uploads/2021/01/port1-3-e1602015638504.png);
 	background-size: cover;
-	background-position: center;
+	 */
+  /* object-fit: contain; */
 
+}
+.content{
+  margin-bottom: 10px;
+  width: 100%;
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px,40px;
+  height: 100%;
+}
+.container{
+  max-width: 650px;
+  width:100%;
+  display: flex;
+  flex-direction: column;
+
+}
+.mainButton{
+  font-weight: bold;
+    width: 75%;
+    margin-bottom: 12px;
+    color: #f9f9f9;
+    background-color: #0063e5;
+    border-radius: 5px;
+    letter-spacing: 1.5px;
+    font-size: 18px;
+    padding: 16.5px;
+    border: 1px solid transparent;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    
+}
+.mainButton:hover{
+  background-color: #0483ee;
+}
+.description{
+  text-align: center;
+    color: #f9f9f9;
+    font-size: 12px;
+    font-style: oblique;
+    margin:0 0 21px;
+    line-height: 1.6;
+    letter-spacing: 1.1px;
 }

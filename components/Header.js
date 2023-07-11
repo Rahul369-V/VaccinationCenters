@@ -3,6 +3,7 @@ import { Router,useRouter } from 'next/router'
 import { useAuth } from '../context';
 
 
+
 // import firebase from "firebase/app"
 // import 'firebase/auth';
 const styleTag  = {
@@ -18,7 +19,7 @@ function Header(props) {
    
   return (
     
-    <div className={styleTag.headerWrapper}>
+    <div className='wrapper'>
         <div className={styleTag.inlineWrapper}>
             <p className='flex-1'>Covid Vaccination</p>
             
@@ -28,10 +29,10 @@ function Header(props) {
                 return (
                     <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'>
               
-                        <div className={styleTag.button}>
+                        <div className='loginBtn'>
                             <p onClick={() => router.push(`/login`)}>Login</p>
                         </div>
-                        <div className={styleTag.button}>
+                        <div className='loginBtn'>
                             <p  onClick={()=>router.push(`/signup`)} >Signup</p>
                         </div>
      
@@ -43,10 +44,10 @@ function Header(props) {
                         {(currentUserRole == "admin")?
 
                         (  <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'>
-                            {currentUser &&<div className={styleTag.button}>
+                            {currentUser &&<div className='loginBtn'>
                                  <p  onClick={()=>router.push(`/AddCenters`)} >Add Centers➕</p>
                             </div>}
-                            {currentUser && <div className={styleTag.button}>
+                            {currentUser && <div className='loginBtn'>
                             <p  onClick={async (e)=>{
                                         e.preventDefault()
                                         logout()
@@ -56,7 +57,7 @@ function Header(props) {
                         )
                         :(  <div className='flex-1 flex items-center flex-row justify-end w-28 h-10 cursor-pointer'> 
                                
-                        {currentUser && <div className={styleTag.button}>
+                        {currentUser && <div className='loginBtn'>
                             <p  onClick={async (e)=>{
                                         e.preventDefault()
                                         logout()
